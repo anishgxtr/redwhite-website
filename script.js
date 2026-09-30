@@ -1,0 +1,10 @@
+const $=s=>document.querySelector(s), $$=s=>document.querySelectorAll(s);
+window.addEventListener('load',()=>setTimeout(()=>$('#preloader')?.classList.add('hide'),700));
+const menuBtn=$('.menu-btn'),menu=$('.menu');menuBtn?.addEventListener('click',()=>menu.classList.toggle('open'));$$('.menu a').forEach(a=>a.addEventListener('click',()=>menu.classList.remove('open')));
+const dot=$('.cursor-dot'),ring=$('.cursor-ring');window.addEventListener('pointermove',e=>{if(!dot||!ring)return;dot.style.left=e.clientX+'px';dot.style.top=e.clientY+'px';ring.animate({left:e.clientX+'px',top:e.clientY+'px'},{duration:250,fill:'forwards'});});
+$$('a,button,.service-card').forEach(el=>{el.addEventListener('mouseenter',()=>ring?.classList.add('hover'));el.addEventListener('mouseleave',()=>ring?.classList.remove('hover'));});
+const video=$('#reelVideo'),play=$('#playControl');play?.addEventListener('click',()=>{if(video.paused){video.play();play.classList.add('is-playing')}else{video.pause();play.classList.remove('is-playing')}});
+video?.addEventListener('click',()=>play.click());
+const timecode=document.querySelector('.timecode b');video?.addEventListener('timeupdate',()=>{const t=video.currentTime||0,h=Math.floor(t/3600),m=Math.floor(t%3600/60),s=Math.floor(t%60),f=Math.floor((t%1)*24);timecode.textContent=[h,m,s,f].map(n=>String(n).padStart(2,'0')).join(':')});
+const orbit=document.querySelector('.camera-orbit');window.addEventListener('scroll',()=>{if(orbit)orbit.style.transform=`translateY(calc(-50% + ${scrollY*.08}px)) rotate(${scrollY*.02}deg)`});
+$$('.service-card').forEach(card=>{card.addEventListener('mousemove',e=>{const r=card.getBoundingClientRect(),x=e.clientX-r.left,y=e.clientY-r.top;card.style.transform=`perspective(900px) rotateY(${(x/r.width-.5)*4}deg) rotateX(${-(y/r.height-.5)*4}deg)`});card.addEventListener('mouseleave',()=>card.style.transform='')});
